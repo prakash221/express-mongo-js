@@ -21,7 +21,7 @@ export const register = async (req, res) => {
 	})
 
 	await newUser.save()
-	res.status(201).json({ message: 'User registered successfully' })
+	return res.status(201).json({ message: 'User registered successfully' })
 }
 
 // Login
@@ -45,7 +45,7 @@ export const login = async (req, res) => {
 			expiresIn: '1h',
 		}
 	)
-	res.status(200).json({ user, token })
+	return res.status(200).json({ user, token })
 }
 
 // Forgot Password (dummy implementation)
@@ -67,7 +67,7 @@ export const forgotPassword = async (req, res) => {
 		}
 	)
 
-	res.status(200).json({ message: `Password reset token ${token}` })
+	return res.status(200).json({ message: `Password reset token ${token}` })
 }
 
 // Reset Password (dummy implementation)
@@ -93,5 +93,5 @@ export const resetPassword = async (req, res) => {
 		}
 	)
 
-	res.status(200).json({ message: 'Password reset successfully' })
+	return res.status(200).json({ message: 'Password reset successfully' })
 }

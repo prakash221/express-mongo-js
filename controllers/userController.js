@@ -4,7 +4,7 @@ import User from '../model/User.js'
 // Dashboard
 export const dashboard = async (req, res) => {
 	const userCount = await User.countDocuments()
-	res.status(200).json({ userCount })
+	return res.status(200).json({ userCount })
 }
 
 // Create User
@@ -29,20 +29,20 @@ export const createUser = async (req, res) => {
 	})
 
 	await newUser.save()
-	res.status(201).json({ message: 'User created successfully', newUser })
+	return res.status(201).json({ message: 'User created successfully', newUser })
 }
 
 // get user by id
 export const getUserById = async (req, res) => {
 	const { id } = req.params
 	const user = await User.findById(id).select('-password')
-	res.status(200).json(user)
+	return res.status(200).json(user)
 }
 
 // Get Users
 export const getUsers = async (req, res) => {
 	const users = await User.find().select('-password')
-	res.status(200).json(users)
+	return res.status(200).json(users)
 }
 // Edit User
 export const editUser = async (req, res) => {
@@ -54,12 +54,12 @@ export const editUser = async (req, res) => {
 		{ first_name, last_name, address, contact_number, email },
 		{ new: true }
 	)
-	res.status(200).json(updatedUser)
+	return res.status(200).json(updatedUser)
 }
 // get my profile
 export const getMyProfile = async (req, res) => {
 	const authUser = req.user
-	res.status(200).json(authUser)
+	return res.status(200).json(authUser)
 }
 
 // Update Profile
@@ -73,7 +73,7 @@ export const updateProfile = async (req, res) => {
 		{ first_name, last_name, address, contact_number, email },
 		{ new: true }
 	)
-	res.status(200).json(updatedProfile)
+	return res.status(200).json(updatedProfile)
 }
 
 // Change Password
@@ -88,7 +88,7 @@ export const changePassword = async (req, res) => {
 
 	user.password = await bcrypt.hash(newPassword, 10)
 	await user.save()
-	res.status(200).json({ message: 'Password changed successfully' })
+	return res.status(200).json({ message: 'Password changed successfully' })
 }
 
 export const deleteUser = async (req, res) => {
@@ -97,5 +97,5 @@ export const deleteUser = async (req, res) => {
 		return res.status(400).json({ message: 'You cannot delete yourself' })
 	}
 	await User.findByIdAndDelete(id)
-	res.status(200).json({ message: 'User deleted successfully' })
+	return res.status(200).json({ message: 'User deleted successfully' })
 }
