@@ -8,6 +8,7 @@ import {
 	getUserById,
 	getUsers,
 	getMyProfile,
+	deleteUser,
 } from '../controllers/userController.js'
 import { protect } from '../middlewares/authMiddleware.js'
 
@@ -23,6 +24,7 @@ router.get('/profile', protect, getMyProfile)
 router.put('/change-password', protect, changePassword)
 router.get('/:id', protect, getUserById)
 router.put('/:id', protect, editUser)
+router.delete('/:id', protect, deleteUser)
 
 // Profile
 

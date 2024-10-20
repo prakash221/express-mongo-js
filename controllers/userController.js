@@ -90,3 +90,12 @@ export const changePassword = async (req, res) => {
 	await user.save()
 	res.status(200).json({ message: 'Password changed successfully' })
 }
+
+export const deleteUser = async (req, res) => {
+	const { id } = req.params
+	if (id === req.user._id.toString()) {
+		return res.status(400).json({ message: 'You cannot delete yourself' })
+	}
+	await User.findByIdAndDelete(id)
+	res.status(200).json({ message: 'User deleted successfully' })
+}
