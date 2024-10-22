@@ -8,7 +8,7 @@ export const register = async (req, res) => {
 		req.body
 	const user = await User.findOne({ email })
 	if (user) {
-		return res.status(400).json({ message: 'Email already exists' })
+		return res.status(400).json({ message: 'Email already exists', data: null })
 	}
 	const hashedPassword = await bcrypt.hash(password, 10)
 	const newUser = new User({
@@ -21,7 +21,9 @@ export const register = async (req, res) => {
 	})
 
 	await newUser.save()
-	return res.status(201).json({ message: 'User registered successfully' })
+	return res
+		.status(201)
+		.json({ message: 'User registered successfully', data: null })
 }
 
 // Login
@@ -45,7 +47,9 @@ export const login = async (req, res) => {
 			expiresIn: '1h',
 		}
 	)
-	return res.status(200).json({ user, token })
+	return res
+		.status(200)
+		.json({ data: { user, token }, message: 'Login successful' })
 }
 
 // Forgot Password (dummy implementation)
@@ -67,7 +71,9 @@ export const forgotPassword = async (req, res) => {
 		}
 	)
 
-	return res.status(200).json({ message: `Password reset token ${token}` })
+	return res
+		.status(200)
+		.json({ message: `Password reset token ${token}`, data: null })
 }
 
 // Reset Password (dummy implementation)
@@ -93,5 +99,7 @@ export const resetPassword = async (req, res) => {
 		}
 	)
 
-	return res.status(200).json({ message: 'Password reset successfully' })
+	return res
+		.status(200)
+		.json({ message: 'Password reset successfully', data: null })
 }
