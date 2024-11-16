@@ -63,6 +63,7 @@ export const getLatestPosts = async (req, res) => {
 					_id: 1,
 					title: 1,
 					author: 1,
+					image: 1,
 					created_at: 1,
 					comment_count: { $size: '$comments' },
 					reaction_count: { $size: '$reactions' },
@@ -80,6 +81,7 @@ export const getLatestPosts = async (req, res) => {
 				$project: {
 					_id: 1,
 					title: 1,
+					image: 1,
 					created_at: 1,
 					comment_count: 1,
 					reaction_count: 1,
