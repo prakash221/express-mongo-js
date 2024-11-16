@@ -129,7 +129,7 @@ export const addComment = async (req, res) => {
 			{ $push: { comments: comment } },
 			{ new: true }
 		)
-		res.status(201).json({ message: 'Comment added successfully', data: post })
+		res.status(201).json({ message: 'Comment added successfully', data: null })
 	} catch (error) {
 		res.status(400).json({ message: error.message })
 	}
@@ -191,7 +191,7 @@ export const addReaction = async (req, res) => {
 		)
 		res
 			.status(201)
-			.json({ message: req.body.reaction + ' added successfully', data: post })
+			.json({ message: req.body.reaction + ' added successfully', data: null })
 	} catch (error) {
 		res.status(400).json({ message: error.message })
 	}
