@@ -35,6 +35,7 @@ export const getPostBySlug = async (req, res) => {
 		const post = await Post.findOne({ slug })
 			.populate('author', 'first_name last_name')
 			.populate('comments.commented_by', 'first_name last_name')
+			.populate('reactions.reacted_by', 'first_name last_name')
 		if (!post) {
 			return res.status(404).json({ message: 'Post not found', data: null })
 		}
@@ -48,7 +49,7 @@ export const getPostBySlug = async (req, res) => {
 export const getLatestPosts = async (req, res) => {
 	const { page = 1, limit = 10 } = req.query
 	try {
-		const posts = await Post.aggregate([
+		const postAggregate = await Post.aggregate([
 			{
 				$sort: { created_at: -1 },
 			},
@@ -70,26 +71,22 @@ export const getLatestPosts = async (req, res) => {
 				},
 			},
 			{
-				$lookup: {
-					from: 'users',
-					localField: 'author',
-					foreignField: '_id',
-					as: 'author',
-				},
-			},
-			{
 				$project: {
 					_id: 1,
 					title: 1,
+					author: 1,
 					image: 1,
 					created_at: 1,
 					comment_count: 1,
 					reaction_count: 1,
-					'author.first_name': 1,
-					'author.last_name': 1,
 				},
 			},
 		])
+
+		const posts = await Post.populate(postAggregate, {
+			path: 'author',
+			select: 'first_name last_name',
+		})
 
 		res.status(200).json(posts)
 	} catch (error) {
