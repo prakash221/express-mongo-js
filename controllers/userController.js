@@ -67,7 +67,6 @@ export const getMyProfile = async (req, res) => {
 // Update Profile
 export const updateProfile = async (req, res) => {
 	const userId = req.user._id
-	console.log(userId)
 	const { first_name, last_name, address, contact_number, email } = req.body
 
 	const updatedProfile = await User.findByIdAndUpdate(
